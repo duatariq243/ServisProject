@@ -1,0 +1,40 @@
+<%- include("partials/header.ejs") %>
+
+<section class="hero">
+    <div class="hero-text">
+        
+        <a href="/products" class="btn">Shop Now</a>
+    </div>
+</section>
+
+<section class="category-section">
+    <h2>Shop by Category</h2>
+
+    <div class="categories">
+        <div class="cat-box"><img src="/images/manshoes.jfif"><p>Men</p></div>
+        <div class="cat-box"><img src="/images/womenshoes.jfif"><p>Women</p></div>
+        <div class="cat-box"><img src="/images/kidshoes.jfif"><p>Kids</p></div>
+        <div class="cat-box"><img src="/images/sneakers.png"><p>Sneakers</p></div>
+    </div>
+</section>
+
+<section class="products-section">
+    <h2>New Arrivals</h2>
+
+    <div class="product-grid">
+    <% products.forEach(p => { %>
+    <div class="product-card">
+        <img src="<%= p.image %>" alt="<%= p.name %>">
+        <h3><%= p.name %></h3>
+        <p>$<%= p.price %></p>
+        <form action="/add-to-cart" method="POST">
+            <input type="hidden" name="productId" value="<%= p.id %>">
+            <button type="submit" class="red-btn">Add To Cart</button>
+        </form>
+    </div>
+    <% }) %>
+</div>
+
+</section>
+
+<%- include("partials/footer.ejs") %>

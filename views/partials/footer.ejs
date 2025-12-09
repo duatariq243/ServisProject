@@ -1,0 +1,49 @@
+<footer class="footer">
+    <div class="container footer-grid">
+
+        <div class="footer-col">
+            <h3>MyStore</h3>
+            <p>Your trusted place to shop the best products online.</p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Shop</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <% if(!user){ %>
+                    <li><a href="/login">Login</a></li>
+                <% } else { %>
+                    <li><a href="/logout">Logout</a></li>
+                <% } %>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Customer Service</h4>
+            <ul>
+                <li><a href="#">Order Tracking</a></li>
+                <li><a href="#">Shipping & Returns</a></li>
+                <li><a href="#">FAQs</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+                <a href="#">📘</a>
+                <a href="#">📸</a>
+                <a href="#">🐦</a>
+                <a href="#">▶️</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© <%= new Date().getFullYear() %> MyStore — All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

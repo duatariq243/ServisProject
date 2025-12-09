@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Add Product</h2>
+<form action="/admin/add-product" method="POST">
+    <input type="text" name="name" placeholder="Product name" required>
+    <input type="number" name="price" placeholder="Price" required>
+    <textarea name="description" placeholder="Product description"></textarea>
+
+    <label>Image File Name (inside public/images folder)</label>
+    <input type="text" name="image" placeholder="example: bag.png" required>
+
+    <button type="submit">Add Product</button>
+</form>
+
+<a href="/admin">Back to Dashboard</a>
+
+</body>
+</html>
