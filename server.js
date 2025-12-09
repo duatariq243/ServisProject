@@ -7,7 +7,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import pkg from "pg";
 import multer from "multer";
-
+import AWS from "aws-sdk";
 import Stripe from "stripe";
 
 const { Client } = pkg;
@@ -45,7 +45,7 @@ const db = new Client({
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
-  ssl: { rejectUnauthorized: false }
+  ssl: false
 });
 db.connect();
 

@@ -3,18 +3,21 @@
 <div class="container">
   <h2>Products</h2>
 
-  <div class="product-grid">
-    <% products.forEach(product => { %>
-      <div class="product-card">
-        <img src="<%= product.image %>" alt="<%= product.name %>" width="200">
+   <div class="product-grid">
+    <% products.forEach(p => { %>
+    <div class="product-card">
+        <img src="<%= p.image %>" alt="<%= p.name %>" width="200">
 
-        <h3><%= product.name %></h3>
-        <p>$<%= product.price %></p>
-      </div>
+
+        <h3><%= p.name %></h3>
+        <p>$<%= p.price %></p>
+        <form action="/add-to-cart" method="POST">
+            <input type="hidden" name="productId" value="<%= p.id %>">
+            
+            <button type="submit" class="red-btn">Add To Cart</button>
+        </form>
+    </div>
     <% }) %>
-  </div>
-
-  <a href="/cart" class="cart-btn">Go to Cart</a>
-</div>
+</div>>
 
 <%- include("partials/footer.ejs") %>
