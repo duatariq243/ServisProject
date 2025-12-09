@@ -24,11 +24,14 @@
     <div class="product-grid">
     <% products.forEach(p => { %>
     <div class="product-card">
-        <img src="<%= p.image %>" alt="<%= p.name %>">
+        <img src="<%= product.image %>" alt="<%= product.name %>" width="200">
+
+
         <h3><%= p.name %></h3>
         <p>$<%= p.price %></p>
         <form action="/add-to-cart" method="POST">
             <input type="hidden" name="productId" value="<%= p.id %>">
+            
             <button type="submit" class="red-btn">Add To Cart</button>
         </form>
     </div>
