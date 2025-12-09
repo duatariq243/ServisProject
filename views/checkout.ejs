@@ -4,10 +4,10 @@
     
     <h2 class="checkout-title">Checkout</h2>
     <p class="checkout-total">Total Payable: <strong>$<%= total %></strong></p>
+<form action="/create-checkout-session" method="POST">
+    <button type="submit" id="checkout-btn">Pay with Card</button>
+</form>
 
-    <form action="/pay" method="POST">
-        <button type="submit" class="checkout-btn">Pay Securely 💳</button>
-    </form>
 
     <a href="/cart" class="checkout-back">← Back to Cart</a>
 
