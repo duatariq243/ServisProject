@@ -292,7 +292,44 @@ app.get("/checkout", requireLogin, async (req, res) => {
   res.render("checkout.ejs", { cartItems, total, totalCents: total * 100 });
 });
 
+app.post("/create-checkout-session", requireLogin, async (req, res) => {
+  const userId = req.session.user.id;
 
+  // Get cart items
+  const cartResult = await db.query(
+    `SELECT products.name, products.price, cart.quantity
+     FROM cart
+     JOIN products ON cart.product_id = products.id
+     WHERE cart.user_id = $1`,
+    [userId]
+  );
+
+  const cartItems = cartResult.rows;
+  if (!cartItems.length) return res.send("Cart is empty");
+
+  try {
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: cartItems.map(item => ({
+        price_data: {
+          currency: "usd",
+          product_data: { name: item.name },
+          unit_amount: Math.round(item.price * 100) // in cents
+        },
+        quantity: item.quantity
+      })),
+      success_url: `${process.env.DOMAIN_URL}/success`,
+      cancel_url: `${process.env.DOMAIN_URL}/cart`
+    });
+
+    res.redirect(session.url); // redirect to Stripe checkout
+  } catch (err) {
+    console.error("Stripe checkout error:", err);
+    res.status(500).send("Stripe checkout failed");
+  }
+});
 // ------------------- Start Server -------------------
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
