@@ -1,48 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
-</head>
-<body>
-    <h2>Your Cart 🛒</h2>
+<%- include("partials/header.ejs") %>
+
+<div class="cart-container">
+
+    <h2 class="cart-heading">Your Cart 🛒</h2>
 
     <% if(cart.length === 0) { %>
-        <p>No items added yet.</p>
-    <% } else { %>
-        <ul>
-            <% cart.forEach(item => { %>
-                <li>
-                    <%= item.name %> - $<%= item.price %> x <%= item.quantity %>
 
-                    <!-- Increment quantity -->
-                    <form action="/cart/update" method="POST" style="display:inline;">
+        <p class="empty-msg">Your cart is empty. Add items to continue.</p>
+        <a href="/products" class="btn-primary">Browse Products</a>
+
+    <% } else { %>
+
+        <ul class="cart-list">
+            <% cart.forEach(item => { %>
+
+            <li class="cart-item">
+                <div class="item-info">
+                    <span class="item-name"><%= item.name %></span>
+                    <span class="item-price">$<%= item.price %></span>
+                </div>
+
+                <div class="item-quantity">
+                    <form action="/cart/update" method="POST">
                         <input type="hidden" name="cart_id" value="<%= item.cart_id %>">
                         <input type="hidden" name="action" value="increment">
-                        <button type="submit">+</button>
+                        <button class="qty-btn">+</button>
                     </form>
 
-                    <!-- Decrement quantity -->
-                    <form action="/cart/update" method="POST" style="display:inline;">
+                    <span class="qty-display"><%= item.quantity %></span>
+
+                    <form action="/cart/update" method="POST">
                         <input type="hidden" name="cart_id" value="<%= item.cart_id %>">
                         <input type="hidden" name="action" value="decrement">
-                        <button type="submit">-</button>
+                        <button class="qty-btn">-</button>
                     </form>
+                </div>
 
-                    <!-- Remove completely -->
-                    <form action="/cart/remove" method="POST" style="display:inline;">
-                        <input type="hidden" name="cart_id" value="<%= item.cart_id %>">
-                        <button type="submit">Remove</button>
-                    </form>
-                </li>
+                <form action="/cart/remove" method="POST">
+                    <input type="hidden" name="cart_id" value="<%= item.cart_id %>">
+                    <button class="remove-btn">Remove</button>
+                </form>
+            </li>
+
             <% }) %>
         </ul>
 
-        <h3>Total: $<%= total %></h3>
-        <a href="/checkout"><button type="button">Checkout 🛒</button></a>
-        <a href="/products">Continue Shopping</a>
+        <h3 class="cart-total">Total: <span>$<%= total %></span></h3>
+
+        <div class="cart-actions">
+            <a href="/checkout" class="btn-primary">Proceed to Checkout</a>
+            <a href="/products" class="btn-secondary">Continue Shopping</a>
+        </div>
+
     <% } %>
 
-</body>
-</html>
+</div>
+
+<%- include("partials/footer.ejs") %>

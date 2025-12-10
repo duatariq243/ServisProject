@@ -4,20 +4,20 @@
   <h2>Products</h2>
 
    <div class="product-grid">
-    <% products.forEach(p => { %>
-    <div class="product-card">
-        <img src="<%= p.image %>" alt="<%= p.name %>" width="200">
+  <% products.forEach(p => { %>
+  <div class="product-card">
+      <img src="<%= p.image %>" width="200" />
 
+      <h3><%= p.name %></h3>
+      <p>$<%= p.price %></p>
 
-        <h3><%= p.name %></h3>
-        <p>$<%= p.price %></p>
-        <form action="/add-to-cart" method="POST">
-            <input type="hidden" name="productId" value="<%= p.id %>">
-            
-            <button type="submit" class="red-btn">Add To Cart</button>
-        </form>
-    </div>
-    <% }) %>
-</div>>
+      <button class="red-btn add-to-cart-btn"
+              data-id="<%= p.id %>">
+          Add To Cart
+      </button>
+  </div>
+  <% }) %>
+</div>
+
 
 <%- include("partials/footer.ejs") %>

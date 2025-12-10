@@ -30,6 +30,11 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
   })
 );
+app.use((req, res, next) => {
+    res.locals.cart = req.session.cart || [];
+    res.locals.total = req.session.total || 0;
+    next();
+});
 
 // Make session user available in all templates
 app.use((req, res, next) => {
