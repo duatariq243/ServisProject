@@ -253,8 +253,12 @@ app.post("/login", async (req, res) => {
 // Start Google OAuth login
 app.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account"
+  })
 );
+
 
 // Google OAuth callback
 app.get(
