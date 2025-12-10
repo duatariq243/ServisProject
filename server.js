@@ -81,23 +81,47 @@ function requireAdmin(req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+// ---------------- GOOGLE AUTH ----------------
+
+const GOOGLE_CALLBACK_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://servisproject.onrender.com/auth/google/callback"
+    : "http://localhost:3000/auth/google/callback";
+
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://yourapp.onrender.com/auth/google/callback"
-
+      clientID: process.env.GOOGLE_CLIENT_ID,   // MUST be in .env
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,  // MUST be in .env
+      callbackURL: GOOGLE_CALLBACK_URL
     },
-    (accessToken, refreshToken, profile, done) => {
-      const user = { email: profile.emails[0].value, name: profile.displayName };
-      return done(null, user);
+    async (accessToken, refreshToken, profile, done) => {
+      
+      // Check if user exists in DB
+      let result = await db.query("SELECT * FROM users WHERE email=$1",[profile.emails[0].value]);
+
+      // If not exist → Insert user
+      if(result.rows.length === 0){
+        await db.query(
+          "INSERT INTO users(email, password, is_admin) VALUES($1,'GOOGLE_USER',false)",
+          [profile.emails[0].value]
+        );
+        result = await db.query("SELECT * FROM users WHERE email=$1",[profile.emails[0].value]);
+      }
+
+      // Return DB user
+      done(null, result.rows[0]);
     }
   )
 );
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+// save to session
+passport.serializeUser((user,done)=>done(null,user.id));
+passport.deserializeUser(async(id,done)=>{
+  const result = await db.query("SELECT * FROM users WHERE id=$1",[id]);
+  done(null,result.rows[0]);
+});
+
 
 // ------------------- Routes -------------------
 
