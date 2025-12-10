@@ -1,47 +1,61 @@
-<%- include("partials/header") %>
+<header class="header">
+  <% // ensure we always have an array to work with so header never throws %>
+  <% const cartSafe = (typeof cart !== 'undefined' && Array.isArray(cart)) ? cart : []; %>
 
-<section class="cart-container">
-  <h2 class="cart-heading">MY SHOPPING CART</h2>
+  <div class="container nav-flex">
+    <h2 class="logo">MyStore</h2>
 
-  <div class="cart-wrapper">
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Shop</a></li>
+        <li><a href="/cart">Cart</a></li>
 
-    <div class="cart-items">
-      <% const cartSafe = (typeof cart !== 'undefined' && Array.isArray(cart)) ? cart : []; %>
+        <% if(!user){ %>
+          <li><a href="/login">Login</a></li>
+        <% } else { %>
+          <li><a href="/logout">Logout</a></li>
+        <% } %>
 
-      <% if (cartSafe.length === 0) { %>
-        <p class="empty-msg">Your cart is empty. Go shopping 😊</p>
-      <% } %>
+        <!-- mini cart toggle (CSS-only drawer can be implemented on cart page) -->
+        <li class="cart-icon">
+          <label for="cart-toggle">🛍️ <span class="cart-count"><%= cartSafe.length %></span></label>
 
-      <% cartSafe.forEach(c => { %>
-        <div class="cart-card">
-          <div class="cart-info">
-            <h3><%= c.name %></h3>
-            <p class="price">$<%= c.price %></p>
+          <!-- mini-cart preview; safe iteration -->
+          <div class="mini-cart">
+            <% if (cartSafe.length > 0) { %>
+              <% cartSafe.slice(0,4).forEach(item => { %>
+                <div class="mini-item">
+                  <!-- products in cart may not have an image field; use placeholder if missing -->
+                  <img src="<%= item.image ? item.image : '/images/placeholder.png' %>" alt="<%= item.name %>" width="44" height="44">
+                  <div class="mini-meta">
+                    <div class="mini-name"><%= item.name %></div>
+                    <div class="mini-qty">x<%= item.quantity %> • $<%= item.price %></div>
+                  </div>
+                </div>
+              <% }) %>
 
-            <form action="/cart/update" method="POST" class="qty-box">
-              <input type="hidden" name="cart_id" value="<%= c.cart_id %>">
-              <button name="action" value="decrement">-</button>
-              <span><%= c.quantity %></span>
-              <button name="action" value="increment">+</button>
-            </form>
-
-            <form action="/cart/remove" method="POST" style="display:inline;">
-              <input type="hidden" name="cart_id" value="<%= c.cart_id %>">
-              <button class="remove-btn">Remove</button>
-            </form>
+              <a href="/cart" class="mini-view">View Cart</a>
+            <% } else { %>
+              <div class="mini-empty">Your cart is empty</div>
+            <% } %>
           </div>
-        </div>
-      <% }) %>
-    </div>
-
-    <div class="cart-summary">
-      <h3>Order Summary</h3>
-      <p>Total Items: <%= cartSafe.length %></p>
-      <h2>Total: $<%= typeof total !== 'undefined' ? total : 0 %></h2>
-      <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
-    </div>
-
+        </li>
+      </ul>
+    </nav>
   </div>
-</section>
+</header>
 
-<%- include("partials/footer") %>
+<style>
+/* small header-mini-cart styles (adjust to your main css later) */
+.cart-icon { position: relative; list-style: none; }
+.cart-count { background:#d10024; color:#fff; padding:2px 7px; border-radius:12px; font-size:12px; margin-left:6px; }
+.mini-cart { position:absolute; right:0; top:36px; width:260px; background:#fff; border:1px solid #eee; padding:12px; display:none; z-index:999; box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+.cart-icon:hover .mini-cart { display:block; } /* purely CSS hover preview */
+.mini-item { display:flex; gap:10px; align-items:center; padding:8px 0; border-bottom:1px solid #f1f1f1; }
+.mini-item img { border-radius:6px; object-fit:cover; }
+.mini-meta .mini-name { font-weight:600; font-size:14px; }
+.mini-meta .mini-qty { font-size:13px; color:#666; }
+.mini-view { display:block; margin-top:8px; text-align:center; background:#000; color:#fff; padding:8px; text-decoration:none; border-radius:6px; }
+.mini-empty { color:#666; padding:8px 0; text-align:center; }
+</style>
