@@ -7,7 +7,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import pkg from "pg";
 import multer from "multer";
-import AWS from "aws";
+import AWS from "aws-sdk";
 import Stripe from "stripe";
 
 const { Client } = pkg;
