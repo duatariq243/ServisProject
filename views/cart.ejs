@@ -1,31 +1,47 @@
 <%- include("partials/header") %>
 
-<div class="cart-drawer">
-    <h2 class="drawer-title">Your Cart 🛒</h2>
+<section class="cart-container">
+  <h2 class="cart-heading">MY SHOPPING CART</h2>
 
-    <div class="cart-drawer-content">
-        
-        <% if (cartItems && cartItems.length > 0) { %>
-            <% cartItems.forEach((item, i) => { %>
-                <div class="drawer-item">
-                    <img src="<%= item.image %>" alt="" />
-                    <div>
-                        <h3><%= item.name %></h3>
-                        <p class="price">$<%= item.price %></p>
-                        <p>Qty: <%= item.quantity %></p>
-                    </div>
-                </div>
-            <% }) %>
+  <div class="cart-wrapper">
 
-            <a href="/checkout" class="drawer-checkout">Checkout →</a>
-        
-        <% } else { %>
-            <p class="empty-text">Your cart is empty 😔</p>
-        <% } %>
+    <div class="cart-items">
+      <% const cartSafe = (typeof cart !== 'undefined' && Array.isArray(cart)) ? cart : []; %>
 
-        <a href="/" class="close-drawer">✕ Close</a>
+      <% if (cartSafe.length === 0) { %>
+        <p class="empty-msg">Your cart is empty. Go shopping 😊</p>
+      <% } %>
+
+      <% cartSafe.forEach(c => { %>
+        <div class="cart-card">
+          <div class="cart-info">
+            <h3><%= c.name %></h3>
+            <p class="price">$<%= c.price %></p>
+
+            <form action="/cart/update" method="POST" class="qty-box">
+              <input type="hidden" name="cart_id" value="<%= c.cart_id %>">
+              <button name="action" value="decrement">-</button>
+              <span><%= c.quantity %></span>
+              <button name="action" value="increment">+</button>
+            </form>
+
+            <form action="/cart/remove" method="POST" style="display:inline;">
+              <input type="hidden" name="cart_id" value="<%= c.cart_id %>">
+              <button class="remove-btn">Remove</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
     </div>
-</div>
 
+    <div class="cart-summary">
+      <h3>Order Summary</h3>
+      <p>Total Items: <%= cartSafe.length %></p>
+      <h2>Total: $<%= typeof total !== 'undefined' ? total : 0 %></h2>
+      <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+
+  </div>
+</section>
 
 <%- include("partials/footer") %>
