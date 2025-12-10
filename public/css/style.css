@@ -6,6 +6,10 @@ body { font-family: 'Poppins', sans-serif; margin:0; background:#fff; }
 .logo { font-size:28px; font-weight:600; }
 .nav-links { list-style:none; display:flex; gap:25px; }
 .nav-links a { text-decoration:none; font-weight:500; color:#222; }
+.nav-links li a:hover {
+    color: #d10024;
+    transition: 0.3s;
+}
 
 /******** HERO ********/
 .hero { height:75vh; background:url('/images/wallpaper.webp') center/cover no-repeat; display:flex; align-items:center; }
@@ -26,13 +30,18 @@ body { font-family: 'Poppins', sans-serif; margin:0; background:#fff; }
 .product-card { width:230px; border:1px solid #eee; padding:15px; border-radius:6px; }
 .product-card img { width:100%; }
 .product-card h3 { margin:10px 0 5px; font-size:18px; }
+.product-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
 .small { padding:8px 18px; font-size:14px; }
 
 /******** FOOTER ********/
 .footer { background:#111; color:white; padding:60px 0; }
 .footer-grid { display:flex; justify-content:space-between; width:80%; margin:auto; }
 .footer a { color:#ddd; text-decoration:none; font-size:14px; }
-.copy { text-align:center; color:#999; margin-top:20px; font-size:13px; }
+.copy { text-align:center; color:#999; margin-top:20px; font-size:13px;  margin-right: 15px;}
 .cart-container {
     max-width: 1100px;
     margin: auto;
