@@ -86,7 +86,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/callback"
+      callbackURL: "https://yourapp.onrender.com/auth/google/callback"
+
     },
     (accessToken, refreshToken, profile, done) => {
       const user = { email: profile.emails[0].value, name: profile.displayName };
@@ -219,6 +220,29 @@ app.post("/login", async (req, res) => {
   };
   res.redirect("/products");
 });
+
+// Start Google OAuth login
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Google OAuth callback
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login"
+  }),
+  async (req, res) => {
+    // Save user in session
+    req.session.user = {
+      email: req.user.email,
+      name: req.user.name,
+      isAdmin: false // you can set admin manually if needed
+    };
+    res.redirect("/products");
+  }
+);
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
