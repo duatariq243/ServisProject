@@ -373,4 +373,77 @@ body { font-family: 'Poppins', sans-serif; margin:0; background:#fff; }
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
+
+    
+}
+/* ===== GLOBAL IMPROVEMENTS ===== */
+.container { width:85%; margin:auto; }
+
+/* Navbar Polished */
+.nav-links a {
+    position: relative;
+    padding-bottom:4px;
+}
+.nav-links a::after {
+    content:"";
+    position:absolute;
+    width:0;
+    height:2px;
+    bottom:0;
+    left:0;
+    background:#d10024;
+    transition:0.3s;
+}
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width:100%;
+}
+
+/* Product Modern Hover */
+.product-card {
+    transition:0.3s ease;
+    border-radius:10px;
+}
+.product-card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Improved Footer Look */
+.footer-grid {
+    gap:60px;
+}
+.footer-grid div h3 {
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:12px;
+    color:#fff;
+}
+.footer a:hover { color:#fff; }
+
+/* Category hover smooth */
+.cat-box {
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
+.cat-box:hover {
+    transform:scale(1.06);
+    box-shadow:0 6px 20px rgba(0,0,0,0.18);
+}
+
+/* Cart Page Aesthetic Boost */
+.cart-card {
+    transition:0.2s;
+    border-radius:10px;
+}
+.cart-card:hover { box-shadow:0 4px 12px rgba(0,0,0,.12); }
+
+/* Add smooth fade to every page load */
+body {
+    animation:fade .5s ease-in-out;
+}
+@keyframes fade {
+    from {opacity:0;}
+    to {opacity:1;}
 }
